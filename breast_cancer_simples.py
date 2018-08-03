@@ -20,3 +20,5 @@ classificador.compile(optimizer= 'adam', loss= 'binary_crossentropy',
                       metrics= ['binary_accuracy'])
 
 classificador.fit(previsores_treino, classe_treino, batch_size = 10, epochs= 100)
+
+previsoes = classificador.predict(previsores_teste)
