@@ -14,11 +14,26 @@ from keras.layers import Dense
 classificador = Sequential()
 classificador.add(Dense(units= 16, activation= 'relu', 
                         kernel_initializer= 'random_uniform', input_dim = 30))
+classificador.add(Dense(units= 16, activation= 'relu', 
+                        kernel_initializer= 'random_uniform'))
+
 classificador.add(Dense(units= 1, activation= 'sigmoid'))
 
-classificador.compile(optimizer= 'adam', loss= 'binary_crossentropy',
-                      metrics= ['binary_accuracy'])
+otimizador = keras.optimizers.Adam(lr = 0.001, decay = 0.0001, clipvalue = 0.5)
+
+classificador.compile(optimizer= otimizador, loss= 'binary_crossentropy',
+                     metrics= ['binary_accuracy'])
+
+#classificador.compile(optimizer= 'adam', loss= 'binary_crossentropy',
+#                     metrics= ['binary_accuracy'])
 
 classificador.fit(previsores_treino, classe_treino, batch_size = 10, epochs= 100)
 
 previsoes = classificador.predict(previsores_teste)
+previsoes = (previsoes > 0.5)
+
+from sklearn.metrics import confusion_matrix, accuracy_score
+precisao = accuracy_score(classe_teste, previsoes)
+matriz = confusion_matrix(classe_teste, previsoes)
+
+resultado = classificador.evaluate(previsores_teste, classe_teste)
