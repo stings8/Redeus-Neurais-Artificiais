@@ -19,3 +19,5 @@ previsao = (previsao > 0.5)
 
 previsores = pd.read_csv('entradas-breast.csv')
 classe = pd.read_csv('saidas-breast.csv')
+classificador.compile(loss= 'binary_crossentropy', optimizer= 'adam', metrics= ['binary_accuracy'])
+resultado = classificador.evaluate(previsores, classe)
