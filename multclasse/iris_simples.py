@@ -1,14 +1,19 @@
 import pandas as pd
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.utils import np_utils
 
 base = pd.read_csv('iris.csv')
-
 previsores = base.iloc[:, 0:4].values
 classe = base.iloc[:, 4].values
 
+from sklearn.preprocessing import LabelEncoder
+labelencoder = LabelEncoder()
+classe = labelencoder.fit_transform(classe)
+classe_dummy = np_utils.to_categorical(classe)
+
 from sklearn.model_selection import train_test_split
-previsores_treino, previsores_teste, classe_treino, classe_teste = train_test_split(previsores, classe, test_size= 0.25)
+previsores_treino, previsores_teste, classe_treino, classe_teste = train_test_split(previsores, classe_dummy, test_size= 0.25)
 
 classificador = Sequential()
 classificador.add(Dense(units= 4, activation= 'relu', input_dim = 4))
